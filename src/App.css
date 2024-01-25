@@ -6,7 +6,6 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  border: 0;
 }
 
 .navbar {
@@ -52,5 +51,38 @@ body {
   border-style: none;
   padding: 10px 16px;
   text-align: center;
+}
+
+.create-post {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+}
+form {
+  margin-top: 50px;
+  padding: 30px 20px;
+  width: 320px;
+  border: solid rgb(47, 93, 161);
+  border-radius: 7px;
+  border-width: 2px;
+  background-color: white;
+  overflow: hidden;
+}
+
+input,
+textarea {
+  padding: 8px 10px;
+  margin: 3px 8px 16px 8px;
+  background-color: rgba(222, 239, 248, 0.877);
+  border: 0px transparent;
+  border-radius: 5px;
+  color: rgb(47, 93, 161);
+  font-size: 16px;
+  z-index: 1;
+}
+
+.submitForm:hover {
+  cursor: pointer;
 }
 
