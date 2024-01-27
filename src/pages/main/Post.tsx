@@ -1,7 +1,21 @@
+import { IPost } from "./Main"
 
+interface IProps {
+  post: IPost
+}
 
-export const Post = () => {
+export const Post = ({post}: IProps) => {
   return (
-    <div>Post</div>
+    <div>
+      <div className="title">
+        <h1>{post.title}</h1>
+      </div>
+      <div className="body">
+        <p>{post.description}</p>
+      </div>
+      <div className="footer">
+        <p>@{post.username}</p>
+      </div>
+    </div>
   )
 }

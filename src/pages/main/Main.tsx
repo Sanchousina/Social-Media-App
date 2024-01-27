@@ -3,10 +3,10 @@ import { db } from '../../config/firebase';
 import { useEffect, useState } from 'react';
 import { Post } from './Post';
 
-interface IPost {
+export interface IPost {
   id: string,
   title: string,
-  desciption: string,
+  description: string,
   user_id: string,
   username: string
 }
@@ -30,7 +30,7 @@ export const Main = () => {
   return (
     <div>
       {postsList?.map(post => {
-        return <Post />
+        return <Post  post={post}/>
       })}
     </div>
   )
