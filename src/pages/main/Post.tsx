@@ -1,4 +1,4 @@
-import { addDoc, getDocs, collection, query, where } from "firebase/firestore";
+import { addDoc, getDocs, deleteDoc, collection, query, where, doc } from "firebase/firestore";
 import { auth, db } from "../../config/firebase";
 import { IPost } from "./Main"
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -8,18 +8,21 @@ interface IProps {
   post: IPost
 }
 
+interface ILike {
+  user_id: string
+}
+
 export const Post = ({post}: IProps) => {
   const [user] = useAuthState(auth);
 
-  const [likesAmount, setLikesAmount] = useState<number>(0)
+  const [likes, setLikes] = useState<ILike[] | null>(null)
 
   const likesRef = collection(db, 'likes');
-
-  const likesDocQuery = query(likesRef, where("post_id", "==", post.id));
-
+  
   const getLikes = async () => {
+    const likesDocQuery = query(likesRef, where("post_id", "==", post.id));
     const likesDocs = await getDocs(likesDocQuery);
-    setLikesAmount(likesDocs.docs.length)
+    setLikes(likesDocs.docs.map(doc => ({user_id: doc.data().user_id})))
   }
 
   const likePost = async () => {
@@ -28,6 +31,20 @@ export const Post = ({post}: IProps) => {
      post_id: post.id
     })
   }
+
+  const unlikePost = async () => {
+    const likeToDeleteQuery = query(
+      likesRef, 
+      where("post_id", "==", post.id), 
+      where("user_id", "==", user?.uid)
+    );
+    const likeToDeleteDoc = (await getDocs(likeToDeleteQuery)).docs[0];
+    const likeToDelete = doc(db, "likes", likeToDeleteDoc.id);
+
+    await deleteDoc(likeToDelete);
+  }
+
+  const hasUserLiked = likes?.find(el => el.user_id === user?.uid);
 
   useEffect(() => {
     getLikes();
@@ -43,8 +60,11 @@ export const Post = ({post}: IProps) => {
       </div>
       <div className="footer">
         <p>@{post.username}</p>
-        <button onClick={() => {likePost(); getLikes()}}> &#128077; </button>
-        <p>Likes: {likesAmount}</p>
+        <button 
+          onClick={() => {hasUserLiked ? unlikePost() : likePost(); getLikes()}}> 
+          { hasUserLiked ? <>&#128078;</> : <>&#128077;</> }
+        </button>
+        <p>Likes: {likes?.length}</p>
       </div>
     </div>
   )
