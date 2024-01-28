@@ -51,7 +51,7 @@ export const Post = ({post}: IProps) => {
   }, [])
 
   return (
-    <div>
+    <div className="post">
       <div className="title">
         <h1>{post.title}</h1>
       </div>
@@ -60,11 +60,13 @@ export const Post = ({post}: IProps) => {
       </div>
       <div className="footer">
         <p>@{post.username}</p>
-        <button 
-          onClick={() => {hasUserLiked ? unlikePost() : likePost(); getLikes()}}> 
-          { hasUserLiked ? <>&#128078;</> : <>&#128077;</> }
-        </button>
-        <p>Likes: {likes?.length}</p>
+        <div className="likes">
+          <button className="likeBtn"
+            onClick={() => {hasUserLiked ? unlikePost() : likePost(); getLikes()}}> 
+            { hasUserLiked ? <>&#128078;</> : <>&#128077;</> }
+          </button>
+          <p>Likes: {likes?.length}</p>
+        </div>
       </div>
     </div>
   )
