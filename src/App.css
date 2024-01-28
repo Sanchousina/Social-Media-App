@@ -13,6 +13,7 @@ body {
   justify-content: end;
   align-items: center;
   margin-bottom: 30px;
+  font-size: 20px;
 }
 
 .navbar .links {
@@ -43,12 +44,13 @@ body {
  margin-right: 10px;
 }
 
-.user button {
+button {
   background-color: #80eeff;
   border-radius: 8px;
   border-style: none;
   padding: 10px 16px;
   text-align: center;
+  font-size: inherit;
 }
 
 .create-post {
@@ -114,4 +116,8 @@ textarea {
   font-size: 30px;
   background-color: inherit;
   border-style: none;
+}
+
+.login {
+  text-align: center;
 }
