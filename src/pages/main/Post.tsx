@@ -48,7 +48,7 @@ export const Post = ({post}: IProps) => {
 
   useEffect(() => {
     getLikes();
-  }, [])
+  }, [getLikes])
 
   return (
     <div className="post">

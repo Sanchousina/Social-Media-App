@@ -30,7 +30,7 @@ export const Main = () => {
 
   useEffect(() => {
     user && getPosts();
-  }, [])
+  }, [user, getPosts])
 
   return (
     <div className='main'>
