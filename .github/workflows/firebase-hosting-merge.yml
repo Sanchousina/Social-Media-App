@@ -21,6 +21,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Set environment variables from secrets
+        run: |
+          echo "REACT_APP_FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> $GITHUB_ENV
+    
       - name: Build
         run: npm run build
 
