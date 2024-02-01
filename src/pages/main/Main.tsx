@@ -1,6 +1,8 @@
-import { getDocs, collection } from 'firebase/firestore'
+/* eslint-disable react/jsx-key */
+import React from 'react';
+import { getDocs, collection } from 'firebase/firestore';
 import { auth, db } from '../../config/firebase';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Post } from './Post';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -18,7 +20,7 @@ export const Main = () => {
 
   const postsRef = collection(db, 'posts');
 
-  const getPosts = async () => {
+  const getPosts = useCallback(async () => {
     try {
       const data = await getDocs(postsRef);
       const docs = data.docs.map(doc => ({...doc.data(), id: doc.id})) as IPost[];
@@ -26,18 +28,18 @@ export const Main = () => {
     } catch(err) {
       console.log(err);
     }
-  }
+  }, [postsRef, setPostsList]);
 
   useEffect(() => {
     user && getPosts();
-  }, [user, getPosts])
+  }, [user, getPosts]);
 
   return (
     <div className='main'>
       {!user && <h1>Login to see posts</h1>}
       {user && postsList?.map(post => {
-        return <Post  post={post}/>
+        return <Post  post={post}/>;
       })}
     </div>
-  )
-}
+  );
+};

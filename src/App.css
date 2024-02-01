@@ -10,7 +10,7 @@ body {
   height: 80px;
   background-color: rgb(47, 93, 161);
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: 30px;
   font-size: 20px;
@@ -28,7 +28,7 @@ body {
 
 .navbar .user {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   margin-right: 50px;
 }

@@ -1,8 +1,9 @@
-import { addDoc, getDocs, deleteDoc, collection, query, where, doc } from "firebase/firestore";
-import { auth, db } from "../../config/firebase";
-import { IPost } from "./Main"
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useEffect, useState } from "react";
+import React from 'react';
+import { addDoc, getDocs, deleteDoc, collection, query, where, doc } from 'firebase/firestore';
+import { auth, db } from '../../config/firebase';
+import { IPost } from './Main';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useEffect, useState, useCallback } from 'react';
 
 interface IProps {
   post: IPost
@@ -15,40 +16,40 @@ interface ILike {
 export const Post = ({post}: IProps) => {
   const [user] = useAuthState(auth);
 
-  const [likes, setLikes] = useState<ILike[] | null>(null)
+  const [likes, setLikes] = useState<ILike[] | null>(null);
 
   const likesRef = collection(db, 'likes');
   
-  const getLikes = async () => {
-    const likesDocQuery = query(likesRef, where("post_id", "==", post.id));
+  const getLikes = useCallback(async () => {
+    const likesDocQuery = query(likesRef, where('post_id', '==', post.id));
     const likesDocs = await getDocs(likesDocQuery);
-    setLikes(likesDocs.docs.map(doc => ({user_id: doc.data().user_id})))
-  }
+    setLikes(likesDocs.docs.map(doc => ({user_id: doc.data().user_id})));
+  }, [likesRef, setLikes]);
 
   const likePost = async () => {
     await addDoc(likesRef, {
-     user_id: user?.uid,
-     post_id: post.id
-    })
-  }
+      user_id: user?.uid,
+      post_id: post.id
+    });
+  };
 
   const unlikePost = async () => {
     const likeToDeleteQuery = query(
       likesRef, 
-      where("post_id", "==", post.id), 
-      where("user_id", "==", user?.uid)
+      where('post_id', '==', post.id), 
+      where('user_id', '==', user?.uid)
     );
     const likeToDeleteDoc = (await getDocs(likeToDeleteQuery)).docs[0];
-    const likeToDelete = doc(db, "likes", likeToDeleteDoc.id);
+    const likeToDelete = doc(db, 'likes', likeToDeleteDoc.id);
 
     await deleteDoc(likeToDelete);
-  }
+  };
 
   const hasUserLiked = likes?.find(el => el.user_id === user?.uid);
 
   useEffect(() => {
     getLikes();
-  }, [getLikes])
+  }, [getLikes]);
 
   return (
     <div className="post">
@@ -69,5 +70,5 @@ export const Post = ({post}: IProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
